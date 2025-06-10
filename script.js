@@ -2,6 +2,16 @@ let currentCode = '';
 let lastActiveTab = 'html';
 let autoRunDelay = 1500;
 let autoRunTimeout;
+let editorHistory = {
+    html: [],
+    css: [],
+    js: []
+};
+let historyPosition = {
+    html: -1,
+    css: -1,
+    js: -1
+};
 
 document.addEventListener('DOMContentLoaded', () => {
     setupEditorListeners();
@@ -62,6 +72,41 @@ button:hover {
     document.getElementById('html-code').value = defaultHTML;
     document.getElementById('css-code').value = defaultCSS;
     document.getElementById('js-code').value = defaultJS;
+    
+    addToHistory(defaultHTML, 'html');
+    addToHistory(defaultCSS, 'css');
+    addToHistory(defaultJS, 'js');
+}
+
+function addToHistory(code, type) {
+    if (code === editorHistory[type][historyPosition[type]]) return;
+    
+    editorHistory[type] = editorHistory[type].slice(0, historyPosition[type] + 1);
+    editorHistory[type].push(code);
+    historyPosition[type] = editorHistory[type].length - 1;
+    
+    if (editorHistory[type].length > 50) {
+        editorHistory[type].shift();
+        historyPosition[type]--;
+    }
+}
+
+function undo(type) {
+    if (historyPosition[type] > 0) {
+        historyPosition[type]--;
+        const code = editorHistory[type][historyPosition[type]];
+        document.getElementById(`${type}-code`).value = code;
+        runCode();
+    }
+}
+
+function redo(type) {
+    if (historyPosition[type] < editorHistory[type].length - 1) {
+        historyPosition[type]++;
+        const code = editorHistory[type][historyPosition[type]];
+        document.getElementById(`${type}-code`).value = code;
+        runCode();
+    }
 }
 
 function switchTab(tab) {
@@ -91,10 +136,19 @@ function setupEditorListeners() {
             }
             
             autoRunTimeout = setTimeout(runCode, autoRunDelay);
+            addToHistory(editor.value, type);
         });
         
         editor.addEventListener('keydown', (e) => {
-            if (e.key === 'Tab') {
+            if (e.ctrlKey || e.metaKey) {
+                if (e.key === 'z') {
+                    e.preventDefault();
+                    undo(type);
+                } else if (e.key === 'y' || (e.shiftKey && e.key === 'z')) {
+                    e.preventDefault();
+                    redo(type);
+                }
+            } else if (e.key === 'Tab') {
                 e.preventDefault();
                 const start = editor.selectionStart;
                 const end = editor.selectionEnd;
@@ -127,6 +181,8 @@ function runCode() {
 function clearCode() {
     const activeEditor = document.querySelector('.editor.active textarea');
     if (activeEditor) {
+        const type = activeEditor.id.split('-')[0];
+        addToHistory('', type);
         activeEditor.value = '';
         runCode();
     }
