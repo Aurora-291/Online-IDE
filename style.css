@@ -1,3 +1,15 @@
+:root {
+    --sage: #94A187;
+    --cream: #F2E9DC;
+    --terra: #C1665A;
+    --forest: #465442;
+    --sand: #E4D5B7;
+    --stone: #8A857E;
+    --leaf: #739072;
+    --active-tab: var(--sage);
+    --tab-hover: #A8B39D;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -6,10 +18,14 @@
 }
 
 body {
-    background: #f5f5f5;
-    color: #333;
+    background: var(--cream);
+    color: var(--forest);
     min-height: 100vh;
     padding: 1rem;
+    background-image: 
+        linear-gradient(rgba(148, 161, 135, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148, 161, 135, 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
 }
 
 .container {
@@ -23,44 +39,72 @@ body {
     align-items: center;
     margin-bottom: 2rem;
     padding: 1.5rem 2.5rem;
-    background: #94A187;
+    background: var(--sage);
     border-radius: 1rem;
-    color: white;
+    color: var(--cream);
+    box-shadow: 0 10px 30px rgba(70, 84, 66, 0.1);
+}
+
+.header-content {
+    text-align: left;
 }
 
 .editor-container {
     display: grid;
     gap: 1.5rem;
     margin-bottom: 1.5rem;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 1024px) {
+    .editor-container {
+        grid-template-columns: 1fr 1fr;
+    }
 }
 
 .code-panel, .preview-panel {
     background: white;
     padding: 1.5rem;
     border-radius: 1rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(70, 84, 66, 0.08);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(70, 84, 66, 0.1);
+    height: fit-content;
+}
+
+.tabs-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
 }
 
 .tabs {
     display: flex;
     gap: 0.5rem;
-    margin-bottom: 1rem;
 }
 
 .tab {
     padding: 0.5rem 1rem;
     border-radius: 0.5rem;
     cursor: pointer;
+    transition: all 0.3s ease;
     background: transparent;
-    border: 1px solid #ddd;
-    color: #333;
+    border: 1px solid var(--sand);
+    color: var(--forest);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.tab:hover {
+    background: var(--tab-hover);
+    color: white;
 }
 
 .tab.active {
-    background: #94A187;
+    background: var(--active-tab);
     color: white;
-    border-color: #94A187;
+    border-color: var(--active-tab);
 }
 
 .editor {
@@ -75,18 +119,27 @@ textarea {
     width: 100%;
     height: 400px;
     padding: 1rem;
-    border: 1px solid #ddd;
+    border: 1px solid var(--sand);
     border-radius: 0.5rem;
     font-family: 'Monaco', 'Consolas', monospace;
     font-size: 0.9rem;
     line-height: 1.5;
     resize: vertical;
+    background: #FAFAFA;
+    color: #2a2a2a;
+    transition: all 0.3s ease;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: var(--sage);
+    box-shadow: 0 0 0 2px rgba(148, 161, 135, 0.1);
 }
 
 #output-frame {
     width: 100%;
     height: 400px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--sand);
     border-radius: 0.5rem;
     background: white;
 }
