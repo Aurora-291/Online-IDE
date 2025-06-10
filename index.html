@@ -13,10 +13,27 @@
                 <h1>Online IDE</h1>
                 <p>A powerful environment for web development</p>
             </div>
+            <div class="header-controls">
+                <div class="theme-switcher">
+                    <button class="theme-btn light active">Light</button>
+                    <button class="theme-btn dark">Dark</button>
+                </div>
+            </div>
         </header>
 
         <div class="editor-container">
             <div class="code-panel">
+                <div class="panel-header">
+                    <div class="editor-controls">
+                        <button class="control-btn" onclick="clearCode()" title="Clear Code">
+                            <span class="icon">🗑️</span>
+                        </button>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="action-btn run-btn" onclick="runCode()">Run Code</button>
+                    </div>
+                </div>
+
                 <div class="tabs-container">
                     <div class="tabs">
                         <button class="tab active" onclick="switchTab('html')">
@@ -29,6 +46,7 @@
                             <span class="file-icon js-icon">JS</span>
                         </button>
                     </div>
+                    <button class="clear-btn" onclick="clearCode()">Clear</button>
                 </div>
                 
                 <div id="html-editor" class="editor active">
@@ -45,6 +63,14 @@
             </div>
 
             <div class="preview-panel">
+                <div class="preview-controls">
+                    <div class="view-controls">
+                        <button class="view-btn mobile" onclick="setPreviewMode('mobile')" title="Mobile View">📱</button>
+                        <button class="view-btn tablet" onclick="setPreviewMode('tablet')" title="Tablet View">📟</button>
+                        <button class="view-btn desktop active" onclick="setPreviewMode('desktop')" title="Desktop View">🖥️</button>
+                    </div>
+                    <button class="open-tab-btn" onclick="openInNewTab()">Open in New Tab</button>
+                </div>
                 <div class="preview-container">
                     <iframe id="output-frame"></iframe>
                 </div>
