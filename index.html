@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Online IDE</title>
+    <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.7/beautify.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.7/beautify-css.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.7/beautify-html.min.js"></script>
-    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
@@ -15,6 +15,12 @@
             <div class="header-content">
                 <h1>Online IDE</h1>
                 <p>A powerful environment for web development</p>
+            </div>
+            <div class="header-controls">
+                <div class="theme-switcher">
+                    <button class="theme-btn light active">Light</button>
+                    <button class="theme-btn dark">Dark</button>
+                </div>
             </div>
         </header>
 
@@ -31,8 +37,12 @@
                         <button class="control-btn" onclick="formatCode(lastActiveTab)" title="Format Code">
                             <span class="icon">⚙️</span>
                         </button>
+                        <button class="control-btn" onclick="toggleFullscreen()" title="Toggle Fullscreen">
+                            <span class="icon">⛶</span>
+                        </button>
                     </div>
                     <div class="action-buttons">
+                        <button class="action-btn save-btn" onclick="saveProject()">Save Project</button>
                         <button class="action-btn run-btn" onclick="runCode()">Run Code</button>
                     </div>
                 </div>
@@ -66,8 +76,23 @@
             </div>
 
             <div class="preview-panel">
+                <div class="preview-controls">
+                    <div class="view-controls">
+                        <button class="view-btn mobile" onclick="setPreviewMode('mobile')" title="Mobile View">📱</button>
+                        <button class="view-btn tablet" onclick="setPreviewMode('tablet')" title="Tablet View">📟</button>
+                        <button class="view-btn desktop active" onclick="setPreviewMode('desktop')" title="Desktop View">🖥️</button>
+                    </div>
+                    <button class="open-tab-btn" onclick="openInNewTab()">Open in New Tab</button>
+                </div>
                 <div class="preview-container">
                     <iframe id="output-frame"></iframe>
+                </div>
+                <div class="console-output">
+                    <div class="console-header">
+                        <span>Console Output</span>
+                        <button class="clear-console-btn" onclick="clearConsole()">Clear Console</button>
+                    </div>
+                    <div class="console-content"></div>
                 </div>
             </div>
         </div>

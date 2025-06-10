@@ -8,7 +8,18 @@
     --leaf: #739072;
     --active-tab: var(--sage);
     --tab-hover: #A8B39D;
+    --error: #ff4444;
+    --success: #4CAF50;
+    --warning: #ff9800;
     --code-text: #2a2a2a;
+}
+
+[data-theme="dark"] {
+    --cream: #1a1a1a;
+    --forest: #e0e0e0;
+    --sand: #333333;
+    --stone: #666666;
+    --sage: #739072;
 }
 
 * {
@@ -50,6 +61,32 @@ body {
     text-align: left;
 }
 
+.header-controls {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.theme-switcher {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.theme-btn {
+    padding: 0.4rem 0.8rem;
+    border: none;
+    border-radius: 0.5rem;
+    background: rgba(255, 255, 255, 0.2);
+    color: var(--cream);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.theme-btn.active {
+    background: rgba(255, 255, 255, 0.3);
+    font-weight: 500;
+}
+
 .editor-container {
     display: grid;
     gap: 1.5rem;
@@ -72,6 +109,7 @@ body {
     border: 1px solid rgba(70, 84, 66, 0.1);
     height: fit-content;
 }
+
 .panel-header {
     display: flex;
     justify-content: space-between;
@@ -89,36 +127,6 @@ body {
 .action-buttons {
     display: flex;
     gap: 0.5rem;
-}
-
-.control-btn {
-    padding: 0.4rem;
-    background: transparent;
-    border: 1px solid var(--sand);
-    border-radius: 0.4rem;
-    color: var(--forest);
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.control-btn:hover {
-    background: var(--sand);
-    color: var(--forest);
-}
-
-.action-btn {
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 0.5rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 0.9rem;
-}
-
-.run-btn {
-    background: var(--leaf);
-    color: white;
 }
 
 .tabs-container {
@@ -185,8 +193,92 @@ textarea:focus {
     box-shadow: 0 0 0 2px rgba(148, 161, 135, 0.1);
 }
 
+.preview-container {
+    position: relative;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.preview-container.mobile {
+    width: 375px;
+    margin: 0 auto;
+}
+
+.preview-container.tablet {
+    width: 768px;
+    margin: 0 auto;
+}
+
+.preview-container.desktop {
+    width: 100%;
+}
+
+.preview-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.view-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.control-btn, .view-btn {
+    padding: 0.4rem;
+    background: transparent;
+    border: 1px solid var(--sand);
+    border-radius: 0.4rem;
+    color: var(--forest);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.control-btn:hover, .view-btn:hover {
+    background: var(--sand);
+    color: var(--forest);
+}
+
+.view-btn.active {
+    background: var(--active-tab);
+    color: white;
+    border-color: var(--active-tab);
+}
+
+.action-btn {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.save-btn {
+    background: var(--sage);
+    color: white;
+}
+
+.run-btn {
+    background: var(--leaf);
+    color: white;
+}
+
 .clear-btn {
     background: var(--terra);
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.open-tab-btn {
+    background: var(--sage);
     color: white;
     padding: 0.5rem 1rem;
     border: none;
@@ -208,43 +300,58 @@ button:hover {
     background: white;
 }
 
-@media (max-width: 768px) {
-    .header {
-        flex-direction: column;
-        text-align: center;
-        gap: 1rem;
-    }
+.console-output {
+    margin-top: 1rem;
+    border: 1px solid var(--sand);
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
 
-    .panel-header {
-        flex-direction: column;
-        gap: 1rem;
-    }
+.console-header {
+    padding: 0.5rem 1rem;
+    background: var(--sand);
+    color: var(--forest);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
-    .editor-controls {
-        width: 100%;
-        justify-content: center;
-    }
+.clear-console-btn {
+    padding: 0.25rem 0.5rem;
+    background: var(--terra);
+    color: white;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
 
-    .action-buttons {
-        width: 100%;
-        justify-content: center;
-    }
+.console-content {
+    padding: 1rem;
+    max-height: 150px;
+    overflow-y: auto;
+    font-family: 'Monaco', 'Consolas', monospace;
+    font-size: 0.9rem;
+    background: #FAFAFA;
+}
 
-    .tabs-container {
-        flex-direction: column;
-        gap: 1rem;
-    }
+.console-message {
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+}
 
-    .tabs {
-        width: 100%;
-        justify-content: center;
-    }
+.console-message.error {
+    background: rgba(255, 68, 68, 0.1);
+    color: var(--error);
+}
 
-    textarea {
-        height: 300px;
-    }
+.console-message.warning {
+    background: rgba(255, 152, 0, 0.1);
+    color: var(--warning);
+}
 
-    #output-frame {
-        height: 300px;
-    }
+.console-message.success {
+    background: rgba(76, 175, 80, 0.1);
+    color: var(--success);
 }
