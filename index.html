@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online IDE</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <h1>Online IDE</h1>
+                <p>A powerful environment for web development</p>
+            </div>
+        </header>
+
+        <div class="editor-container">
+            <div class="code-panel">
+                <div class="tabs-container">
+                    <div class="tabs">
+                        <button class="tab active" onclick="switchTab('html')">
+                            <span class="file-icon html-icon">HTML</span>
+                        </button>
+                        <button class="tab" onclick="switchTab('css')">
+                            <span class="file-icon css-icon">CSS</span>
+                        </button>
+                        <button class="tab" onclick="switchTab('js')">
+                            <span class="file-icon js-icon">JS</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="html-editor" class="editor active">
+                    <textarea id="html-code" spellcheck="false" placeholder="Enter HTML code here..."></textarea>
+                </div>
+                
+                <div id="css-editor" class="editor">
+                    <textarea id="css-code" spellcheck="false" placeholder="Enter CSS code here..."></textarea>
+                </div>
+                
+                <div id="js-editor" class="editor">
+                    <textarea id="js-code" spellcheck="false" placeholder="Enter JavaScript code here..."></textarea>
+                </div>
+            </div>
+
+            <div class="preview-panel">
+                <div class="preview-container">
+                    <iframe id="output-frame"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
