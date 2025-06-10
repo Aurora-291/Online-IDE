@@ -1,32 +1,67 @@
 let currentCode = '';
 let lastActiveTab = 'html';
+let autoRunDelay = 1500;
+let autoRunTimeout;
 
 document.addEventListener('DOMContentLoaded', () => {
-    setupThemeSwitcher();
+    setupEditorListeners();
+    loadDefaultCode();
     runCode();
 });
 
-function setupThemeSwitcher() {
-    const themeBtns = document.querySelectorAll('.theme-btn');
-    themeBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.documentElement.setAttribute('data-theme', btn.classList.contains('dark') ? 'dark' : 'light');
-            themeBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            localStorage.setItem('theme', btn.classList.contains('dark') ? 'dark' : 'light');
-        });
-    });
+function loadDefaultCode() {
+    const defaultHTML = `<!DOCTYPE html>
+<html>
+<head>
+    <title>Sample Site</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Sample Site</h1>
+        <p>Start coding your project here!</p>
+        <button onclick="showMessage()">Click me!</button>
+    </div>
+</body>
+</html>`;
 
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-        document.documentElement.setAttribute('data-theme', savedTheme);
-        themeBtns.forEach(btn => {
-            btn.classList.toggle('active', 
-                (savedTheme === 'dark' && btn.classList.contains('dark')) || 
-                (savedTheme === 'light' && btn.classList.contains('light'))
-            );
-        });
-    }
+    const defaultCSS = `body {
+    font-family: 'Helvetica Neue', sans-serif;
+    margin: 0;
+    padding: 2rem;
+    background-color: #f5f5f5;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+button {
+    padding: 0.5rem 1rem;
+    background: #94A187;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+button:hover {
+    transform: translateY(-2px);
+}`;
+
+    const defaultJS = `function showMessage() {
+    console.log('Button clicked!');
+    alert('Hello from Sample Site!');
+}`;
+
+    document.getElementById('html-code').value = defaultHTML;
+    document.getElementById('css-code').value = defaultCSS;
+    document.getElementById('js-code').value = defaultJS;
 }
 
 function switchTab(tab) {
@@ -46,6 +81,30 @@ function switchTab(tab) {
     editor.focus();
 }
 
+function setupEditorListeners() {
+    ['html', 'css', 'js'].forEach(type => {
+        const editor = document.getElementById(`${type}-code`);
+        
+        editor.addEventListener('input', () => {
+            if (autoRunTimeout) {
+                clearTimeout(autoRunTimeout);
+            }
+            
+            autoRunTimeout = setTimeout(runCode, autoRunDelay);
+        });
+        
+        editor.addEventListener('keydown', (e) => {
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                const start = editor.selectionStart;
+                const end = editor.selectionEnd;
+                editor.value = editor.value.substring(0, start) + '    ' + editor.value.substring(end);
+                editor.selectionStart = editor.selectionEnd = start + 4;
+            }
+        });
+    });
+}
+
 function runCode() {
     const htmlCode = document.getElementById('html-code').value;
     const cssCode = document.getElementById('css-code').value;
@@ -57,16 +116,12 @@ function runCode() {
 
     currentCode = combinedCode;
     
-    try {
-        const iframe = document.getElementById('output-frame');
-        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-        
-        iframeDoc.open();
-        iframeDoc.write(combinedCode);
-        iframeDoc.close();
-    } catch (error) {
-        console.error('Error running code:', error);
-    }
+    const iframe = document.getElementById('output-frame');
+    const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+    
+    iframeDoc.open();
+    iframeDoc.write(combinedCode);
+    iframeDoc.close();
 }
 
 function clearCode() {
@@ -75,23 +130,4 @@ function clearCode() {
         activeEditor.value = '';
         runCode();
     }
-}
-
-function openInNewTab() {
-    const newTab = window.open();
-    newTab.document.write(currentCode);
-    newTab.document.close();
-}
-
-function setPreviewMode(mode) {
-    const container = document.querySelector('.preview-container');
-    const viewBtns = document.querySelectorAll('.view-btn');
-    
-    container.className = 'preview-container ' + mode;
-    viewBtns.forEach(btn => {
-        btn.classList.remove('active');
-        if (btn.classList.contains(mode)) {
-            btn.classList.add('active');
-        }
-    });
 }
