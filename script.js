@@ -1,6 +1,34 @@
 let currentCode = '';
 let lastActiveTab = 'html';
 
+document.addEventListener('DOMContentLoaded', () => {
+    setupThemeSwitcher();
+    runCode();
+});
+
+function setupThemeSwitcher() {
+    const themeBtns = document.querySelectorAll('.theme-btn');
+    themeBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.documentElement.setAttribute('data-theme', btn.classList.contains('dark') ? 'dark' : 'light');
+            themeBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            localStorage.setItem('theme', btn.classList.contains('dark') ? 'dark' : 'light');
+        });
+    });
+
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        themeBtns.forEach(btn => {
+            btn.classList.toggle('active', 
+                (savedTheme === 'dark' && btn.classList.contains('dark')) || 
+                (savedTheme === 'light' && btn.classList.contains('light'))
+            );
+        });
+    }
+}
+
 function switchTab(tab) {
     document.querySelectorAll('.editor').forEach(editor => {
         editor.classList.remove('active');
