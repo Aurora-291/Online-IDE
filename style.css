@@ -355,3 +355,62 @@ button:hover {
     background: rgba(76, 175, 80, 0.1);
     color: var(--success);
 }
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+
+    .panel-header {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .editor-controls {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .action-buttons {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .tabs-container {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .tabs {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .preview-controls {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .view-controls {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .preview-container {
+        width: 100% !important;
+    }
+
+    textarea {
+        height: 300px;
+    }
+
+    #output-frame {
+        height: 300px;
+    }
+
+    .clear-console-btn {
+        display: block;
+    }
+}
