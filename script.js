@@ -15,6 +15,34 @@ let historyPosition = {
 
 document.addEventListener('DOMContentLoaded', () => {
     setupEditorListeners();
+    function formatCode(type) {
+    const editor = document.getElementById(`${type}-code`);
+    let formatted = editor.value;
+    
+    try {
+        if (type === 'js') {
+            formatted = js_beautify(formatted, {
+                indent_size: 4,
+                space_in_empty_paren: true
+            });
+        } else if (type === 'html') {
+            formatted = html_beautify(formatted, {
+                indent_size: 4,
+                max_preserve_newlines: 2
+            });
+        } else if (type === 'css') {
+            formatted = css_beautify(formatted, {
+                indent_size: 4
+            });
+        }
+        
+        editor.value = formatted;
+        addToHistory(formatted, type);
+        runCode();
+    } catch (error) {
+        console.error('Error formatting code:', error);
+    }
+}
     loadDefaultCode();
     runCode();
 });
@@ -147,8 +175,11 @@ function setupEditorListeners() {
                 } else if (e.key === 'y' || (e.shiftKey && e.key === 'z')) {
                     e.preventDefault();
                     redo(type);
+                } else if (e.key === 'Enter') {
+                    e.preventDefault();
+                    runCode();
                 }
-            } else if (e.key === 'Tab') {
+            }else if (e.key === 'Tab') {
                 e.preventDefault();
                 const start = editor.selectionStart;
                 const end = editor.selectionEnd;
