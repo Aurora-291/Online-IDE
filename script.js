@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadSavedCode();
     runCode();
     interceptConsole();
+    loadDefaultCode();
 });
 
 function setupThemeSwitcher() {
@@ -230,6 +231,65 @@ function loadSavedCode() {
             historyPosition = codeState.historyPosition;
         }
     }
+}
+
+function loadDefaultCode() {
+    const defaultHTML = `<!DOCTYPE html>
+<html>
+<head>
+    <title>Sample Site</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Sample Site</h1>
+        <p>Start coding your project here!</p>
+        <button onclick="showMessage()">Click me!</button>
+    </div>
+</body>
+</html>`;
+
+    const defaultCSS = `body {
+    font-family: 'Helvetica Neue', sans-serif;
+    margin: 0;
+    padding: 2rem;
+    background-color: #f5f5f5;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+button {
+    padding: 0.5rem 1rem;
+    background: #94A187;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+button:hover {
+    transform: translateY(-2px);
+}`;
+
+    const defaultJS = `function showMessage() {
+    console.log('Button clicked!');
+    alert('Hello from Sample Site!');
+}`;
+
+    document.getElementById('html-code').value = defaultHTML;
+    document.getElementById('css-code').value = defaultCSS;
+    document.getElementById('js-code').value = defaultJS;
+    
+    addToHistory(defaultHTML, 'html');
+    addToHistory(defaultCSS, 'css');
+    addToHistory(defaultJS, 'js');
 }
 
 function saveProject() {
